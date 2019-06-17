@@ -1,0 +1,42 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+strategy:
+  matrix:
+    Python36:
+      python.version: '3.6'
+    Python37:
+      python.version: '3.7'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
+
+- script: |
+    mkdir -p /tmp/terraform/bin
+    cd /tmp/terraform/bin
+    wget --quiet -O terraform.zip https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
+    unzip terraform.zip
+    chmod u+x terraform
+    echo '##vso[task.prependpath]/tmp/terraform/bin'
+  displayName: 'Install Terraform'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install pretf==0.4.5 pretf.aws==0.4.5
+  displayName: 'Install dependencies'
+
+- script: |
+    pip install pytest pytest-azurepipelines
+    cd tests
+    pytest
+  displayName: 'pytest'
