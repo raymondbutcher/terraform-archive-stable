@@ -1,0 +1,6 @@
+__pycache__
+.terraform*
+*.json
+*.zip
+tests/src
+terraform.*
