@@ -1,5 +1,7 @@
 # terraform-archive-stable
 
+[![Build Status](https://dev.azure.com/raymondbutcher/terraform-archive-stable/_apis/build/status/raymondbutcher.terraform-archive-stable?branchName=master)](https://dev.azure.com/raymondbutcher/terraform-archive-stable/_build/latest?definitionId=2&branchName=master)
+
 Terraform module to create zip archives with stable hashes.
 
 Python is used to create these files. Terraform's `archive_file` data source sometimes [produces different results](https://github.com/terraform-providers/terraform-provider-archive/issues/34) which lead to spurious resource changes when working in teams. This module normalizes permissions and timestamps so the resulting file is consistent and only changes when there are meaningful changes to the source files.
