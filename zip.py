@@ -9,6 +9,7 @@ import tempfile
 import zipfile
 
 query = json.load(sys.stdin)
+empty_dirs = json.loads(query["search"])
 search = json.loads(query["search"])
 source_dir = query["source_dir"]
 output_path = query["output_path"]
@@ -16,7 +17,11 @@ output_path = query["output_path"]
 source_files = {}
 search_results = []
 for root, dirs, files in os.walk(source_dir):
-    for name in dirs + files:
+    if empty_dirs:
+        items = dirs + files
+    else:
+        items = files
+    for name in items:
         path = os.path.join(root, name)
         relative_path = os.path.relpath(path, source_dir)
         source_files[relative_path] = path
@@ -85,11 +90,8 @@ json.dump(
     {
         "output_base64sha256": base64.b64encode(output_sha256.digest()).decode(),
         "output_md5": output_md5.hexdigest(),
-        "output_path": output_path,
         "output_sha": output_sha.hexdigest(),
-        "search": json.dumps(search),
         "search_results": json.dumps(sorted(search_results)),
-        "source_dir": source_dir,
     },
     sys.stdout,
     indent=2,

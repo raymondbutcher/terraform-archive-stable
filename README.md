@@ -16,7 +16,12 @@ module "archive" {
 
   source_dir  = "${path.module}/src"
   output_path = "${path.module}/out.zip"
-  search      = ["build.sh"]
+
+  # Can include empty dirs in the zip, defaults to false.
+  empty_dirs = true
+
+  # Can search for and return matching files included in the zip.
+  search      = ["build.sh", "*.json"]
 }
 
 locals {
