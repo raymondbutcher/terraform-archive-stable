@@ -90,3 +90,25 @@ class TestModule(SimpleTest):
         outputs = self.apply()
         third_output_md5 = outputs["output_md5"]
         assert third_output_md5 == first_output_md5
+
+    def test_disabled(self):
+
+        with self.create("main.tf.json"):
+
+            archive = yield block(
+                "module",
+                "archive",
+                {
+                    "source": "../",
+                    "enabled": False,
+                    "source_dir": "src",
+                    "output_path": "out.zip",
+                    "search": ["*.txt"],
+                },
+            )
+
+            yield block("output", "output_md5", {"value": archive.output_md5})
+
+        outputs = self.apply()
+
+        assert outputs["output_md5"] == ""

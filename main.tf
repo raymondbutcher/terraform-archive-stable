@@ -7,6 +7,11 @@ variable "empty_dirs" {
   default = false
 }
 
+variable "enabled" {
+  type    = bool
+  default = true
+}
+
 variable "output_path" {
   type = string
 }
@@ -21,6 +26,8 @@ variable "source_dir" {
 }
 
 data "external" "archive" {
+  count = var.enabled ? 1 : 0
+
   program = ["python", "${path.module}/zip.py"]
   query = {
     empty_dirs  = jsonencode(var.empty_dirs)
@@ -31,7 +38,7 @@ data "external" "archive" {
 }
 
 output "output_md5" {
-  value = data.external.archive.result.output_md5
+  value = var.enabled ? data.external.archive[0].result.output_md5 : ""
 }
 
 output "output_path" {
@@ -39,11 +46,11 @@ output "output_path" {
 }
 
 output "output_sha" {
-  value = data.external.archive.result.output_sha
+  value = var.enabled ? data.external.archive[0].result.output_sha : ""
 }
 
 output "output_base64sha256" {
-  value = data.external.archive.result.output_base64sha256
+  value = var.enabled ? data.external.archive[0].result.output_base64sha256 : ""
 }
 
 output "search" {
@@ -51,7 +58,7 @@ output "search" {
 }
 
 output "search_results" {
-  value = jsondecode(data.external.archive.result.search_results)
+  value = var.enabled ? jsondecode(data.external.archive[0].result.search_results) : []
 }
 
 output "source_dir" {
