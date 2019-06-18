@@ -51,7 +51,7 @@ output "search" {
 }
 
 output "search_results" {
-  value = jsondecode(data.external.archive[0].result.search_results)
+  value = jsondecode(data.external.archive.result.search_results)
 }
 
 output "source_dir" {
