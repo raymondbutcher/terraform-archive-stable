@@ -11,7 +11,7 @@ import zipfile
 query = json.load(sys.stdin)
 empty_dirs = json.loads(query["search"])
 search = json.loads(query["search"])
-source_dir = json.loads(query["source_dir"])
+source_dir = query["source_dir"]
 output_path = query["output_path"]
 
 if not source_dir:
