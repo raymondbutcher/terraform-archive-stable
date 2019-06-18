@@ -11,8 +11,21 @@ import zipfile
 query = json.load(sys.stdin)
 empty_dirs = json.loads(query["search"])
 search = json.loads(query["search"])
-source_dir = query["source_dir"]
+source_dir = json.loads(query["source_dir"])
 output_path = query["output_path"]
+
+if not source_dir:
+    json.dump(
+        {
+            "output_base64sha256": "",
+            "output_md5": "",
+            "output_sha": "",
+            "search_results": json.dumps([]),
+        },
+        sys.stdout,
+        indent=2,
+    )
+    sys.exit(0)
 
 source_files = {}
 search_results = []
