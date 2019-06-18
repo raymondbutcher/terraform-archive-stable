@@ -17,14 +17,15 @@ variable "search" {
 }
 
 variable "source_dir" {
-  type = string
+  type    = string
+  default = ""
 }
 
 data "external" "archive" {
   program = ["python", "${path.module}/zip.py"]
   query = {
     empty_dirs  = jsonencode(var.empty_dirs)
-    source_dir  = jsonencode(var.source_dir)
+    source_dir  = var.source_dir
     output_path = var.output_path
     search      = jsonencode(var.search)
   }
