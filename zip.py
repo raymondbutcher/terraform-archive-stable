@@ -3,6 +3,7 @@ import fnmatch
 import hashlib
 import json
 import os
+import shutil
 import stat
 import sys
 import tempfile
@@ -80,10 +81,10 @@ try:
         else:
             break
 
-    os.rename(temp_file.name, output_path)
+    shutil.move(temp_file.name, output_path)
 
 except Exception:
-    os.remove(temp_file)
+    os.remove(temp_file.name)
     raise
 
 json.dump(
