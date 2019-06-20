@@ -1,5 +1,5 @@
 module "archive" {
-  source      = "../"
+  source      = "../.."
   source_dir  = "src"
   output_path = "out.zip"
   search      = ["*.txt"]

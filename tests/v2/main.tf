@@ -1,5 +1,5 @@
 module "archive" {
-  source      = "../"
+  source      = "../.."
   enabled     = false
   source_dir  = "src"
   output_path = "out.zip"
