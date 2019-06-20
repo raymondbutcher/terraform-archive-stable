@@ -32,7 +32,7 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install pretf==0.4.6 pretf.aws==0.4.6
+    pip install pretf==0.4.8
   displayName: 'Install dependencies'
 
 - script: |
